@@ -88,6 +88,7 @@ const EmailGeneratorUpload = () => {
       // Generate CSV
       const csvData = generatedEmails.map(email => ({
         Name: email.name,
+        EmailAddress: email.email,
         Subject: email.subject,
         EmailContent: email.content
       }));
