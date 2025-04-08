@@ -1,127 +1,4 @@
-export default EmailGeneratorUpload;  return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">EVO by Bord Products - Email Generator</h1>
-      
-      {/* File Upload Section */}
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Upload CSV File</h2>
-        <div className="mb-4">
-          <input 
-            type="file" 
-            accept=".csv" 
-            onChange={handleFileChange} 
-            className="block w-full text-sm text-gray-500
-              file:mr-4 file:py-2 file:px-4
-              file:rounded-full file:border-0
-              file:text-sm file:font-semibold
-              file:bg-blue-50 file:text-blue-700
-              hover:file:bg-blue-100"
-          />
-          <p className="mt-2 text-sm text-gray-500">
-            Upload a CSV file with your contact information. The CSV should have columns for 
-            "Specifier Contact: Name", "Specifier Meeting Date", "ARC Representative", 
-            "Action Required", "Current Projects", and "Specifier Needs".
-          </p>
-        </div>
-        
-        <div className="flex gap-3 flex-wrap">
-          <button 
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            onClick={handleGenerate}
-            disabled={loading || !file}
-          >
-            {loading ? 'Generating...' : 'Generate Emails'}
-          </button>
-          
-          <button 
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-            onClick={handleCopyCSV}
-            disabled={!csvContent || loading}
-          >
-            Copy CSV to Clipboard
-          </button>
-          
-          <button 
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
-            onClick={handleSaveCSV}
-            disabled={!csvContent || loading}
-          >
-            Download CSV
-          </button>
-        </div>
-      </div>
-      
-      {/* Status Message */}
-      {status && (
-        <div className="mb-6 p-4 bg-gray-100 rounded-lg">
-          {status}
-        </div>
-      )}
-      
-      {/* Results Section */}
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Email list */}
-        {emails.length > 0 && (
-          <div className="md:w-1/3">
-            <h2 className="text-xl font-bold mb-3">Generated Emails ({emails.length})</h2>
-            <div className="border rounded-lg overflow-hidden max-h-96 overflow-y-auto">
-              <ul className="divide-y">
-                {emails.map((email, index) => (
-                  <li 
-                    key={index}
-                    className={`p-3 hover:bg-gray-50 cursor-pointer ${selectedEmail === email ? 'bg-blue-50' : ''}`}
-                    onClick={() => setSelectedEmail(email)}
-                  >
-                    <p className="font-medium">{email.name}</p>
-                    <p className="text-sm text-gray-600">{email.email}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
-        
-        {/* Email preview */}
-        {selectedEmail && (
-          <div className="md:w-2/3">
-            <h2 className="text-xl font-bold mb-3">Email Preview</h2>
-            <div className="border rounded-lg p-4 bg-white">
-              <p className="mb-2"><strong>To:</strong> {selectedEmail.name} ({selectedEmail.email})</p>
-              <p className="mb-4"><strong>Subject:</strong> {selectedEmail.subject}</p>
-              <div className="border-t pt-4 whitespace-pre-wrap">
-                {selectedEmail.content}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      {/* CSV Preview */}
-      {csvContent && (
-        <div className="mt-6">
-          <h2 className="text-xl font-bold mb-3">CSV Preview</h2>
-          <textarea 
-            className="w-full h-40 p-2 border rounded font-mono text-sm"
-            value={csvContent}
-            readOnly
-          />
-        </div>
-      )}
-      
-      {/* Instructions */}
-      <div className="mt-8 p-4 bg-gray-100 rounded-lg">
-        <h2 className="text-lg font-semibold mb-2">How to Use</h2>
-        <ol className="list-decimal pl-5">
-          <li className="mb-2">Click "Browse" to select your CSV file</li>
-          <li className="mb-2">Click "Generate Emails" to process your data</li>
-          <li className="mb-2">Review the generated emails by clicking on a contact</li>
-          <li className="mb-2">Click "Download CSV" to save the email content as a CSV file</li>
-          <li className="mb-2">Alternatively, click "Copy CSV to Clipboard" to copy the CSV content</li>
-        </ol>
-      </div>
-    </div>
-  );
-};import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 // Import papaparse for CSV handling
 const Papa = window.Papa || { parse: () => {}, unparse: () => {} };
@@ -539,3 +416,130 @@ const EmailGeneratorUpload = () => {
     
     return content;
   };
+  
+  return (
+    <div className="p-6 max-w-6xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">EVO by Bord Products - Email Generator</h1>
+      
+      {/* File Upload Section */}
+      <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">Upload CSV File</h2>
+        <div className="mb-4">
+          <input 
+            type="file" 
+            accept=".csv" 
+            onChange={handleFileChange} 
+            className="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100"
+          />
+          <p className="mt-2 text-sm text-gray-500">
+            Upload a CSV file with your contact information. The CSV should have columns for 
+            "Specifier Contact: Name", "Specifier Meeting Date", "ARC Representative", 
+            "Action Required", "Current Projects", and "Specifier Needs".
+          </p>
+        </div>
+        
+        <div className="flex gap-3 flex-wrap">
+          <button 
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={handleGenerate}
+            disabled={loading || !file}
+          >
+            {loading ? 'Generating...' : 'Generate Emails'}
+          </button>
+          
+          <button 
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            onClick={handleCopyCSV}
+            disabled={!csvContent || loading}
+          >
+            Copy CSV to Clipboard
+          </button>
+          
+          <button 
+            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+            onClick={handleSaveCSV}
+            disabled={!csvContent || loading}
+          >
+            Download CSV
+          </button>
+        </div>
+      </div>
+      
+      {/* Status Message */}
+      {status && (
+        <div className="mb-6 p-4 bg-gray-100 rounded-lg">
+          {status}
+        </div>
+      )}
+      
+      {/* Results Section */}
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Email list */}
+        {emails.length > 0 && (
+          <div className="md:w-1/3">
+            <h2 className="text-xl font-bold mb-3">Generated Emails ({emails.length})</h2>
+            <div className="border rounded-lg overflow-hidden max-h-96 overflow-y-auto">
+              <ul className="divide-y">
+                {emails.map((email, index) => (
+                  <li 
+                    key={index}
+                    className={`p-3 hover:bg-gray-50 cursor-pointer ${selectedEmail === email ? 'bg-blue-50' : ''}`}
+                    onClick={() => setSelectedEmail(email)}
+                  >
+                    <p className="font-medium">{email.name}</p>
+                    <p className="text-sm text-gray-600">{email.email}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+        
+        {/* Email preview */}
+        {selectedEmail && (
+          <div className="md:w-2/3">
+            <h2 className="text-xl font-bold mb-3">Email Preview</h2>
+            <div className="border rounded-lg p-4 bg-white">
+              <p className="mb-2"><strong>To:</strong> {selectedEmail.name} ({selectedEmail.email})</p>
+              <p className="mb-4"><strong>Subject:</strong> {selectedEmail.subject}</p>
+              <div className="border-t pt-4 whitespace-pre-wrap">
+                {selectedEmail.content}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* CSV Preview */}
+      {csvContent && (
+        <div className="mt-6">
+          <h2 className="text-xl font-bold mb-3">CSV Preview</h2>
+          <textarea 
+            className="w-full h-40 p-2 border rounded font-mono text-sm"
+            value={csvContent}
+            readOnly
+          />
+        </div>
+      )}
+      
+      {/* Instructions */}
+      <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+        <h2 className="text-lg font-semibold mb-2">How to Use</h2>
+        <ol className="list-decimal pl-5">
+          <li className="mb-2">Click "Browse" to select your CSV file</li>
+          <li className="mb-2">Click "Generate Emails" to process your data</li>
+          <li className="mb-2">Review the generated emails by clicking on a contact</li>
+          <li className="mb-2">Click "Download CSV" to save the email content as a CSV file</li>
+          <li className="mb-2">Alternatively, click "Copy CSV to Clipboard" to copy the CSV content</li>
+        </ol>
+      </div>
+    </div>
+  );
+};
+
+export default EmailGeneratorUpload;
