@@ -10,6 +10,7 @@ const EmailGeneratorUpload = () => {
   const [csvContent, setCsvContent] = useState('');
   const [emails, setEmails] = useState([]);
   const [selectedEmail, setSelectedEmail] = useState(null);
+  const [debugInfo, setDebugInfo] = useState('');
   
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -38,27 +39,40 @@ const EmailGeneratorUpload = () => {
         skipEmptyLines: true
       }).data;
       
+      // Debug: log headers
+      const headers = parsedData.length > 0 ? Object.keys(parsedData[0]) : [];
+      setDebugInfo(`CSV Headers: ${headers.join(', ')}`);
+      
       setStatus(`Generating emails for ${parsedData.length} contacts...`);
       
       const generatedEmails = [];
       
       // Process each row
       parsedData.forEach(row => {
-        // Check for required fields
-        if (!row['Specifier Contact:  Name'] || !row['Action Required']) {
-          return; // Skip incomplete rows
+        // Find column names using flexible matching
+        const nameColumn = findColumnByKeywords(headers, ['specifier', 'contact', 'name']);
+        const emailColumn = findColumnByKeywords(headers, ['specifier', 'contact', 'email']);
+        const meetingDateColumn = findColumnByKeywords(headers, ['specifier', 'meeting', 'date']);
+        const arcRepColumn = findColumnByKeywords(headers, ['arc', 'representative']);
+        const actionRequiredColumn = findColumnByKeywords(headers, ['action', 'required']);
+        const projectsColumn = findColumnByKeywords(headers, ['current', 'projects']);
+        const needsColumn = findColumnByKeywords(headers, ['specifier', 'needs']);
+        
+        // Check if required columns exist and have values
+        if (!nameColumn || !row[nameColumn] || !actionRequiredColumn || !row[actionRequiredColumn]) {
+          return; // Skip this row
         }
         
         // Extract required information
-        const fullName = row['Specifier Contact:  Name'];
+        const fullName = row[nameColumn];
         const firstName = extractFirstName(fullName);
-        const email = row['Specifier Contact: Email'];
-        const meetingDate = formatDate(row['Specifier Meeting Date']);
-        const arcRep = row['ARC Representative'];
+        const email = emailColumn ? row[emailColumn] : '';
+        const meetingDate = formatDate(meetingDateColumn ? row[meetingDateColumn] : '');
+        const arcRep = arcRepColumn ? row[arcRepColumn] : '';
         const arcRepFirstName = extractFirstName(arcRep);
-        const actionRequired = row['Action Required'];
-        const currentProjects = row['Current Projects'] || '';
-        const specifierNeeds = row['Specifier Needs'] || '';
+        const actionRequired = row[actionRequiredColumn];
+        const currentProjects = projectsColumn ? row[projectsColumn] : '';
+        const specifierNeeds = needsColumn ? row[needsColumn] : '';
         
         // Filter out exterior/facade mentions
         const filteredNeeds = specifierNeeds.replace(/\bexterior\b|\bfacade\b/gi, '');
@@ -101,6 +115,15 @@ const EmailGeneratorUpload = () => {
       setStatus(`Error: ${error.message}`);
       setLoading(false);
     }
+  };
+  
+  // Helper function to find a column name that contains all keywords
+  const findColumnByKeywords = (headers, keywords) => {
+    const lowercaseKeywords = keywords.map(k => k.toLowerCase());
+    return headers.find(header => {
+      const lowercaseHeader = header.toLowerCase();
+      return lowercaseKeywords.every(keyword => lowercaseHeader.includes(keyword));
+    });
   };
   
   // Helper function to read file as text
@@ -185,21 +208,21 @@ const EmailGeneratorUpload = () => {
     
     // Check for project types
     ['Residential', 'Multi-Residential', 'Commercial', 'Fit Out', 'Hospitality'].forEach(type => {
-      if (projectString.includes(type)) {
+      if (projectString && projectString.includes(type)) {
         projectTypes.push(type);
       }
     });
     
     // Check for budget levels
     ['High', 'Mid', 'Low'].forEach(level => {
-      if (projectString.includes(level)) {
+      if (projectString && projectString.includes(level)) {
         budgetLevels.push(level);
       }
     });
     
     // Check for build types
     ['New Build', 'Alteration', 'Renovation', 'Extension'].forEach(type => {
-      if (projectString.includes(type)) {
+      if (projectString && projectString.includes(type)) {
         buildTypes.push(type);
       }
     });
@@ -216,13 +239,13 @@ const EmailGeneratorUpload = () => {
     
     // Standard application interests
     ['joinery', 'wall', 'cabinetry', 'panelling'].forEach(app => {
-      if (needsString.toLowerCase().includes(app)) {
+      if (needsString && needsString.toLowerCase().includes(app)) {
         interests.push(app);
       }
     });
     
     // Special case for ceiling panelling
-    if (needsString.toLowerCase().includes('ceiling')) {
+    if (needsString && needsString.toLowerCase().includes('ceiling')) {
       interests.push('ceiling panelling');
     }
     
@@ -439,8 +462,8 @@ const EmailGeneratorUpload = () => {
           />
           <p className="mt-2 text-sm text-gray-500">
             Upload a CSV file with your contact information. The CSV should have columns for 
-            "Specifier Contact: Name", "Specifier Meeting Date", "ARC Representative", 
-            "Action Required", "Current Projects", and "Specifier Needs".
+            contact name, email, meeting date, ARC representative, action required, 
+            current projects, and specifier needs.
           </p>
         </div>
         
@@ -475,6 +498,13 @@ const EmailGeneratorUpload = () => {
       {status && (
         <div className="mb-6 p-4 bg-gray-100 rounded-lg">
           {status}
+        </div>
+      )}
+      
+      {/* Debug Info */}
+      {debugInfo && (
+        <div className="mb-6 p-4 bg-gray-100 rounded-lg text-xs font-mono">
+          {debugInfo}
         </div>
       )}
       
