@@ -161,7 +161,7 @@ const EmailGeneratorUpload = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', 'EVO_Follow_Up_Emails.csv');
+    link.setAttribute('download', 'EVOPANEL_Follow_Up_Emails.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -191,13 +191,13 @@ const EmailGeneratorUpload = () => {
   
   const createSubjectLine = (meetingDate, arcRepFirstName, actionRequired) => {
     if (actionRequired === 'PDF information') {
-      return `EVO by Bord Products - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
+      return `EVOPANEL by Bord Products - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
     } else if (actionRequired === 'PDF information & indicative pricing') {
-      return `EVO Information & Pricing - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
+      return `EVOPANEL Information & Pricing - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
     } else if (actionRequired === 'PDF information, Indicative pricing & samples requested') {
-      return `EVO Collection - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
+      return `EVOPANEL Collection - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
     } else {
-      return `EVO by Bord Products - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
+      return `EVOPANEL by Bord Products - Follow-up from your ${meetingDate} meeting with ${arcRepFirstName}`;
     }
   };
   
@@ -376,16 +376,16 @@ const EmailGeneratorUpload = () => {
     
     // Common introduction
     content += `Dear ${firstName},\n\n`;
-    content += `Thank you for taking the time to meet with ${arcRepFirstName} on ${meetingDate} to discuss EVO by Bord Products. It was a pleasure to introduce our next-generation decorative timber surfaces and learn more about your ${projectTypeMention} projects.\n\n`;
+    content += `Thank you for taking the time to meet with ${arcRepFirstName} on ${meetingDate} to discuss EVOPANEL by Bord Products. It was a pleasure to introduce our next-generation decorative timber surfaces and learn more about your ${projectTypeMention} projects.\n\n`;
     
     // Benefits section with appropriate heading
     let benefitsHeading = '';
     if (actionRequired === 'PDF information') {
-      benefitsHeading = 'Why EVO is perfect for your projects:';
+      benefitsHeading = 'Why EVOPANEL is perfect for your projects:';
     } else if (actionRequired === 'PDF information & indicative pricing') {
-      benefitsHeading = 'Why EVO stands out for your projects:';
+      benefitsHeading = 'Why EVOPANEL stands out for your projects:';
     } else {
-      benefitsHeading = 'Why EVO is ideal for your work:';
+      benefitsHeading = 'Why EVOPANEL is ideal for your work:';
     }
     
     content += `${benefitsHeading}\n\n`;
@@ -423,17 +423,18 @@ const EmailGeneratorUpload = () => {
       // Add sample request section with address confirmation
       content += 'About your sample request:\n\n';
       content += 'I\'ll arrange for samples to be dispatched this week. To make sure they get to you, could you please confirm your mailing address?\n\n';
-      content += 'I\'ve also attached our brochure and technical specifications for your reference. Please feel free to contact me with any questions about incorporating EVO into your projects.\n';
+      content += 'I\'ve also attached our brochure and technical specifications for your reference. Please feel free to contact me with any questions about incorporating EVOPANEL into your projects.\n\n';
     }
     
     // Attachments statement and closing
     if (actionRequired === 'PDF information') {
       content += 'I\'ve attached our product brochure and technical specifications with detailed information on applications and performance characteristics.\n\n';
-      content += 'Please don\'t hesitate to reach out if you have any questions or would like to discuss how EVO could work for specific elements of your projects. If you\'d like to see and feel the quality of our EVO surfaces, I\'d be happy to arrange for samples to be sent to you.\n\n';
+      content += 'Please don\'t hesitate to reach out if you have any questions or would like to discuss how EVOPANEL could work for specific elements of your projects. If you\'d like to see and feel the quality of our EVOPANEL surfaces, I\'d be happy to arrange for samples to be sent to you.\n\n';
     } else if (actionRequired === 'PDF information & indicative pricing') {
       content += `I\'ve attached our brochure and technical specifications showcasing applications for your ${projectTypeMention} needs.\n\n`;
-      content += 'Please feel free to contact me with any questions about incorporating EVO into your projects or if you\'d like more specific information. If you\'d like to see the quality of our surfaces firsthand, I\'d be happy to arrange for samples to be sent to you.\n\n';
+      content += 'Please feel free to contact me with any questions about incorporating EVOPANEL into your projects or if you\'d like more specific information. If you\'d like to see the quality of our surfaces firsthand, I\'d be happy to arrange for samples to be sent to you.\n\n';
     }
+    // Note: For 'PDF information, Indicative pricing & samples requested', the closing is already included above
     
     // Standard closing for all emails
     content += 'Looking forward to hearing from you.';
@@ -443,7 +444,7 @@ const EmailGeneratorUpload = () => {
   
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">EVO by Bord Products - Email Generator</h1>
+      <h1 className="text-2xl font-bold mb-4">EVOPANEL by Bord Products - Email Generator</h1>
       
       {/* File Upload Section */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
