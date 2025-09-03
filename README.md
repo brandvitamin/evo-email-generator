@@ -1,6 +1,6 @@
-# EVO Email Generator
+# EVOPANEL Email Generator
 
-This is a web application that generates customized follow-up emails for EVO by Bord Products based on CSV data.
+This is a web application that generates customized follow-up emails for EVOPANEL by Bord Products based on CSV data.
 
 ## Features
 
@@ -56,4 +56,4 @@ Your CSV file should include the following columns:
 
 - React
 - PapaParse (for CSV parsing)
-- CSS for styling# evo-email-generator
+- CSS for styling
